@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografik: Inflation verständlich erklärt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <!-- Color Palette: Energetic & Playful -->
+    <!-- NEITHER Mermaid JS NOR SVG were used in this document. All visuals are created with HTML/CSS/Tailwind or rendered on a Canvas element via Chart.js. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <div class="container mx-auto p-4 md:p-8">
+
+        <header class="text-center mb-12">
+            <h1 class="text-4xl md:text-6xl font-black text-[#00A6ED] mb-2">Alles wird teurer!</h1>
+            <p class="text-lg md:text-xl text-gray-600">Eine visuelle Reise durch die Welt der Inflation.</p>
+        </header>
+
+        <main>
+            <section id="definition" class="mb-16">
+                <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8">
+                    <h2 class="text-3xl font-bold text-center mb-6 text-[#4A4A4A]">Was bedeutet Inflation? Der Döner-Effekt</h2>
+                    <p class="text-center max-w-3xl mx-auto mb-8">
+                        Inflation bedeutet, dass die allgemeinen Preise für Waren und Dienstleistungen steigen. Dein Geld verliert an Kaufkraft – du kannst für den gleichen Betrag weniger kaufen als früher. Das spüren wir alle, besonders bei den kleinen Dingen des Alltags.
+                    </p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center text-center">
+                        <div class="flex flex-col items-center">
+                            <span class="text-6xl mb-2">🥙</span>
+                            <p class="font-bold text-xl text-gray-500">Früher</p>
+                            <p class="text-4xl font-black text-[#73C371]">5,00 €</p>
+                        </div>
+                        <div class="flex flex-col items-center text-[#F16A43]">
+                             <span class="text-8xl font-black animate-pulse">→</span>
+                             <p class="text-2xl font-bold">Geld verliert an Wert</p>
+                             <span class="text-5xl">📉</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                             <span class="text-6xl mb-2">🥙</span>
+                            <p class="font-bold text-xl text-gray-500">Heute</p>
+                            <p class="text-4xl font-black text-[#F16A43]">7,00 €</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="causes" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#4A4A4A]">Warum steigen die Preise?</h2>
+                <p class="text-center max-w-3xl mx-auto mb-8">
+                    Inflation hat nicht nur eine einzige Ursache. Meist ist es ein Zusammenspiel aus drei Hauptfaktoren, die die Preise in die Höhe treiben.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div class="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform">
+                        <div class="text-5xl mb-4">🛒💨</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#00A6ED]">Nachfrage-Inflation</h3>
+                        <p>Wenn alle mehr von einem Produkt wollen, das Angebot aber knapp ist, steigt der Preis. Wie beim Hype um die neuesten Sneaker.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform">
+                        <div class="text-5xl mb-4">⛽️🚛</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#F16A43]">Angebots-Inflation</h3>
+                        <p>Wenn die Herstellung teurer wird (z.B. durch höhere Energiekosten), müssen Unternehmen die Preise anheben, um profitabel zu bleiben.</p>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6 transform hover:scale-105 transition-transform">
+                        <div class="text-5xl mb-4">💸🖨️</div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FDBE3B]">Geldmengen-Inflation</h3>
+                        <p>Wenn zu viel Geld im Umlauf ist, aber die Menge der Güter gleich bleibt, verliert das Geld an Wert. Jeder Euro ist weniger "wert".</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="impact" class="mb-16">
+                 <h2 class="text-3xl font-bold text-center mb-2 text-[#4A4A4A]">Wer ist von der Inflation betroffen?</h2>
+                 <p class="text-center max-w-3xl mx-auto mb-8">
+                    Die Auswirkungen der Inflation sind vielfältig und treffen verschiedene Gruppen auf unterschiedliche Weise. Besonders Sparer und Menschen mit festem Einkommen spüren die Folgen.
+                </p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                        <h3 class="text-xl font-bold mb-2 text-center">Der schwindende Wert des Ersparten</h3>
+                        <p class="text-center text-sm mb-4">Inflation "frisst" das Ersparte auf. Bei 5% Inflation sind 100€ nach einem Jahr real nur noch 95€ wert. Dieses Diagramm zeigt, wie sich der Wert deines Geldes über 5 Jahre bei einer konstanten Inflationsrate von 3% pro Jahr verringert.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="savingsChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl shadow-lg p-6">
+                         <h3 class="text-xl font-bold mb-2 text-center">Steigende Kosten im Alltag von Jugendlichen</h3>
+                        <p class="text-center text-sm mb-4">Auch das Taschengeld ist betroffen. Dinge, die für Jugendliche wichtig sind, werden teurer. Hier ein Vergleich der Preissteigerungen für typische Ausgaben.</p>
+                        <div class="chart-container h-80 md:h-96">
+                            <canvas id="youthCostsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="response" class="mb-16">
+                <h2 class="text-3xl font-bold text-center mb-2 text-[#4A4A4A]">Was tut der Staat dagegen?</h2>
+                <p class="text-center max-w-3xl mx-auto mb-8">
+                    Um die Inflation in den Griff zu bekommen, arbeiten verschiedene Institutionen zusammen. Ihre wichtigsten Werkzeuge sind die Geld- und Finanzpolitik.
+                </p>
+                <div class="bg-white rounded-2xl shadow-lg p-8">
+                    <div class="relative">
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
+                            <div class="flex flex-col items-center text-center p-4 border-2 border-[#00A6ED] rounded-lg">
+                                <h3 class="font-bold text-lg">🇪🇺 Europäische Zentralbank (EZB)</h3>
+                                <p class="text-sm mt-2">Das mächtigste Werkzeug: Sie kann den <span class="font-bold">Leitzins erhöhen</span>. Dadurch wird es für Banken teurer, sich Geld zu leihen. Kredite werden teurer, Sparen wird attraktiver, die Nachfrage sinkt.</p>
+                            </div>
+                            <div class="flex flex-col items-center text-center p-4 border-2 border-[#73C371] rounded-lg mt-0 lg:mt-12">
+                                 <h3 class="font-bold text-lg">🏛️ Regierung (Bund & Länder)</h3>
+                                <p class="text-sm mt-2">Kann <span class="font-bold">steuerlich eingreifen</span> (z.B. Mehrwertsteuer senken), <span class="font-bold">Preise deckeln</span> (z.B. bei Energie) oder Bürger durch <span class="font-bold">Transferleistungen</span> (z.B. Energiepauschale) entlasten.</p>
+                            </div>
+                            <div class="flex flex-col items-center text-center p-4 border-2 border-[#FDBE3B] rounded-lg">
+                                 <h3 class="font-bold text-lg">🇩🇪 Deutsche Bundesbank</h3>
+                                <p class="text-sm mt-2">Als Teil des EZB-Systems <span class="font-bold">beobachtet sie</span> die deutsche Preisentwicklung, <span class="font-bold">analysiert</span> die Daten und <span class="font-bold">berät</span> die Politik. Sie ist der "Wächter" der Preisstabilität in Deutschland.</p>
+                            </div>
+                        </div>
+                        <div class="hidden lg:block absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -z-10"></div>
+                        <div class="hidden lg:flex justify-around absolute top-1/2 left-0 w-full -z-10">
+                            <div class="bg-[#00A6ED] w-4 h-4 rounded-full -mt-2"></div>
+                            <div class="bg-[#73C371] w-4 h-4 rounded-full -mt-2"></div>
+                             <div class="bg-[#FDBE3B] w-4 h-4 rounded-full -mt-2"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="text-center mt-16 pt-8 border-t border-gray-300">
+                <h3 class="text-2xl font-bold text-[#4A4A4A]">Wissen ist Macht (über dein Geld)</h3>
+                <p class="text-gray-600 max-w-2xl mx-auto mt-4">
+                    Inflation ist ein komplexes Thema, aber die Grundlagen zu verstehen, hilft dir, klügere finanzielle Entscheidungen zu treffen. Wer informiert ist, kann sein Geld besser schützen und für die Zukunft planen.
+                </p>
+                <p class="text-xs text-gray-400 mt-8">
+                    Diese Infografik basiert auf dem Essay "Alles wird teurer - Ist unser Geld bald nichts mehr wert?". Erstellt am 4. Juli 2025.
+                </p>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        function wrapText(str) {
+            const maxLength = 16;
+            if (typeof str !== 'string' || str.length <= maxLength) {
+                return str;
+            }
+            const words = str.split(' ');
+            const lines = [];
+            let currentLine = '';
+            for (const word of words) {
+                if ((currentLine + ' ' + word).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = word;
+                } else {
+                    if (currentLine.length > 0) {
+                        currentLine += ' ' + word;
+                    } else {
+                        currentLine = word;
+                    }
+                }
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = (tooltipItems) => {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(' ');
+            }
+            return label;
+        };
+
+        const savingsChartCtx = document.getElementById('savingsChart').getContext('2d');
+        const savingsData = {
+            labels: ['Start', 'nach 1 Jahr', 'nach 2 Jahren', 'nach 3 Jahren', 'nach 4 Jahren', 'nach 5 Jahren'],
+            datasets: [{
+                label: 'Realer Wert von 100 €',
+                data: [100, 97, 94.09, 91.27, 88.53, 85.87],
+                fill: true,
+                backgroundColor: 'rgba(241, 106, 67, 0.2)',
+                borderColor: '#F16A43',
+                tension: 0.1,
+                pointBackgroundColor: '#F16A43',
+                pointRadius: 5
+            }]
+        };
+        new Chart(savingsChartCtx, {
+            type: 'line',
+            data: savingsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        ticks: {
+                            callback: function(value) {
+                                return value + '€';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    }
+                }
+            }
+        });
+        
+        const youthCostsChartCtx = document.getElementById('youthCostsChart').getContext('2d');
+        const youthCostsData = {
+            labels: [wrapText('Kinoticket'), wrapText('Döner Kebab'), wrapText('Streaming-Abo (monatl.)'), wrapText('Schul- mittagessen')],
+            datasets: [{
+                label: 'Früher',
+                data: [9, 5, 8.99, 3.50],
+                backgroundColor: '#00A6ED',
+                borderColor: '#00A6ED',
+                borderWidth: 1
+            }, {
+                label: 'Heute',
+                data: [12.50, 7, 12.99, 4.80],
+                backgroundColor: '#F16A43',
+                borderColor: '#F16A43',
+                borderWidth: 1
+            }]
+        };
+        new Chart(youthCostsChartCtx, {
+            type: 'bar',
+            data: youthCostsData,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                         ticks: {
+                            callback: function(value) {
+                                return value + '€';
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                       callbacks: {
+                           title: tooltipTitleCallback
+                        }
+                    },
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,202 @@
+[
+  {
+    "typ": "mc",
+    "frage": "Was ist ein typisches Anzeichen für Inflation?",
+    "optionen": [
+      "Sinkende Preise",
+      "Steigende Preise",
+      "Stabile Preise"
+    ],
+    "richtig": "Steigende Preise"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was versteht man unter Kaufkraft?",
+    "optionen": [
+      "Menge des Geldes",
+      "Wert des Geldes im Ausland",
+      "Was man für Geld kaufen kann"
+    ],
+    "richtig": "Was man für Geld kaufen kann"
+  },
+  {
+    "typ": "mc",
+    "frage": "Wer steuert die Geldpolitik im Euroraum?",
+    "optionen": [
+      "Bundesregierung",
+      "Weltbank",
+      "Europäische Zentralbank"
+    ],
+    "richtig": "Europäische Zentralbank"
+  },
+  {
+    "typ": "mc",
+    "frage": "Welche Maßnahme hilft gegen Inflation?",
+    "optionen": [
+      "Zinssenkung",
+      "Zinserhöhung",
+      "Mehr Geld drucken"
+    ],
+    "richtig": "Zinserhöhung"
+  },
+  {
+    "typ": "mc",
+    "frage": "Welche Gruppen spüren Inflation besonders stark?",
+    "optionen": [
+      "Menschen mit festen Verträgen",
+      "Menschen mit wenig Geld",
+      "Großunternehmen"
+    ],
+    "richtig": "Menschen mit wenig Geld"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was ist Nachfrageinflation?",
+    "optionen": [
+      "Weniger Nachfrage, sinkende Preise",
+      "Mehr Nachfrage bei gleichem Angebot",
+      "Steuererhöhungen"
+    ],
+    "richtig": "Mehr Nachfrage bei gleichem Angebot"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was ist Angebotsinflation?",
+    "optionen": [
+      "Steigende Kosten für Produktion",
+      "Weniger Nachfrage",
+      "Höhere Löhne"
+    ],
+    "richtig": "Steigende Kosten für Produktion"
+  },
+  {
+    "typ": "mc",
+    "frage": "Wie kann die EZB Inflation dämpfen?",
+    "optionen": [
+      "Zinsen erhöhen",
+      "Steuern senken",
+      "Mehr Geld ausgeben"
+    ],
+    "richtig": "Zinsen erhöhen"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was passiert bei Inflation mit dem Geldwert?",
+    "optionen": [
+      "Er steigt",
+      "Er sinkt",
+      "Bleibt gleich"
+    ],
+    "richtig": "Er sinkt"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was passiert, wenn die Inflation zu hoch wird?",
+    "optionen": [
+      "Mehr Konsum",
+      "Löhne sinken automatisch",
+      "Geld verliert an Wert"
+    ],
+    "richtig": "Geld verliert an Wert"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was versteht man unter Preisstabilität?",
+    "optionen": [
+      "Schnell steigende Preise",
+      "Langsam sinkende Preise",
+      "Kaum Veränderung der Preise"
+    ],
+    "richtig": "Kaum Veränderung der Preise"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was passiert mit Sparguthaben bei Inflation?",
+    "optionen": [
+      "Es wächst",
+      "Es verliert an Wert",
+      "Es bleibt gleich"
+    ],
+    "richtig": "Es verliert an Wert"
+  },
+  {
+    "typ": "mc",
+    "frage": "Welche Preise steigen oft zuerst bei Inflation?",
+    "optionen": [
+      "Lebensmittel",
+      "Aktien",
+      "Luxusgüter"
+    ],
+    "richtig": "Lebensmittel"
+  },
+  {
+    "typ": "mc",
+    "frage": "Warum erhöht die EZB die Zinsen bei Inflation?",
+    "optionen": [
+      "Kredite attraktiver machen",
+      "Kredite verteuern und Konsum bremsen",
+      "Sparen verhindern"
+    ],
+    "richtig": "Kredite verteuern und Konsum bremsen"
+  },
+  {
+    "typ": "mc",
+    "frage": "Was kann Inflation langfristig zerstören?",
+    "optionen": [
+      "Wettbewerb",
+      "Vertrauen ins Geldsystem",
+      "Arbeitsplätze"
+    ],
+    "richtig": "Vertrauen ins Geldsystem"
+  },
+  {
+    "typ": "tf",
+    "frage": "Inflation bedeutet, dass man für das gleiche Geld mehr bekommt.",
+    "richtig": false
+  },
+  {
+    "typ": "tf",
+    "frage": "Ein Kinoticket kostet heute mehr als vor 10 Jahren – das ist ein Beispiel für Inflation.",
+    "richtig": true
+  },
+  {
+    "typ": "tf",
+    "frage": "Die Zentralbank senkt den Leitzins, um Inflation zu bekämpfen.",
+    "richtig": false
+  },
+  {
+    "typ": "tf",
+    "frage": "Höhere Energiekosten können zu Angebotsinflation führen.",
+    "richtig": true
+  },
+  {
+    "typ": "tf",
+    "frage": "Inflation betrifft nur Erwachsene.",
+    "richtig": false
+  },
+  {
+    "typ": "tf",
+    "frage": "Wenn dein Taschengeld nicht steigt, du dir aber weniger leisten kannst, ist das Inflation.",
+    "richtig": true
+  },
+  {
+    "typ": "tf",
+    "frage": "Inflation kann durch Lieferengpässe ausgelöst werden.",
+    "richtig": true
+  },
+  {
+    "typ": "tf",
+    "frage": "Inflation ist grundsätzlich schlecht für die Wirtschaft.",
+    "richtig": false
+  },
+  {
+    "typ": "tf",
+    "frage": "Die Bundesregierung kann durch Preisdeckel versuchen, Inflation zu bremsen.",
+    "richtig": true
+  },
+  {
+    "typ": "tf",
+    "frage": "Sparer profitieren in der Regel stark von Inflation.",
+    "richtig": false
+  }
+]

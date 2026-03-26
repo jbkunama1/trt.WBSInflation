@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Richtig/Falsch Quiz zur Inflation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-4 sm:p-6 md:p-8">
+
+    <div class="max-w-5xl mx-auto">
+        <h1 class="text-3xl sm:text-4xl font-bold text-gray-800 text-center mb-8">Richtig oder Falsch? 3 Bildpaare zur Inflation</h1>
+
+        <!-- Container for all pairs -->
+        <div class="space-y-10">
+
+            <!-- Pair 1: Was bedeutet Inflation? -->
+            <div>
+                <h2 class="text-2xl font-bold text-center mb-4">Frage 1: Was bedeutet Inflation für meine Kaufkraft?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Side: WRONG -->
+                    <div class="border-4 border-red-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-red-500 text-white font-bold py-1 px-3 rounded-full">FALSCH</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Bei Inflation kann ich für das gleiche Geld MEHR kaufen.</h3>
+                        <div class="w-full flex justify-around items-center p-4 bg-red-50 rounded-lg">
+                            <div class="text-center">
+                                <span class="text-4xl">💰</span>
+                                <p class="font-semibold mt-1">Gestern</p>
+                                <p class="text-gray-600">5€ = 🥙</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                            <div class="text-center">
+                                <span class="text-4xl">💰</span>
+                                <p class="font-semibold mt-1">Heute</p>
+                                <p class="text-gray-600">5€ = 🥙 + 🥤</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Side: CORRECT -->
+                    <div class="border-4 border-green-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white font-bold py-1 px-3 rounded-full">RICHTIG</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Bei Inflation kann ich für das gleiche Geld WENIGER kaufen.</h3>
+                        <div class="w-full flex justify-around items-center p-4 bg-green-50 rounded-lg">
+                             <div class="text-center">
+                                <span class="text-4xl">💰</span>
+                                <p class="font-semibold mt-1">Gestern</p>
+                                <p class="text-gray-600">5€ = 🥙</p>
+                            </div>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                            <div class="text-center">
+                                <span class="text-4xl">💸</span>
+                                <p class="font-semibold mt-1">Heute</p>
+                                <p class="text-gray-600">7€ = 🥙</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pair 2: Was passiert mit Erspartem? -->
+            <div>
+                <h2 class="text-2xl font-bold text-center mb-4">Frage 2: Was passiert mit meinem Ersparten bei Inflation?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Side: WRONG -->
+                    <div class="border-4 border-red-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-red-500 text-white font-bold py-1 px-3 rounded-full">FALSCH</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Mein Erspartes wird automatisch mehr wert.</h3>
+                        <div class="w-full flex flex-col items-center p-4 bg-red-50 rounded-lg">
+                            <span class="text-6xl mb-2">🐷</span>
+                            <p class="font-bold text-lg">100€</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 my-2 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                            <span class="text-8xl mb-2">🐷</span>
+                            <p class="font-bold text-xl">Wert: 110€</p>
+                        </div>
+                    </div>
+                    <!-- Right Side: CORRECT -->
+                    <div class="border-4 border-green-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white font-bold py-1 px-3 rounded-full">RICHTIG</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Mein Erspartes verliert an Wert (Kaufkraft).</h3>
+                         <div class="w-full flex flex-col items-center p-4 bg-green-50 rounded-lg">
+                            <span class="text-6xl mb-2">🐷</span>
+                            <p class="font-bold text-lg">100€</p>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 my-2 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                            </svg>
+                            <span class="text-5xl opacity-60 mb-2">🐷</span>
+                            <p class="font-bold text-xl">Kaufkraft: 95€</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pair 3: Wer bekämpft Inflation? -->
+            <div>
+                <h2 class="text-2xl font-bold text-center mb-4">Frage 3: Wer ist der wichtigste Akteur im Kampf gegen Inflation?</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Left Side: WRONG -->
+                    <div class="border-4 border-red-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-red-500 text-white font-bold py-1 px-3 rounded-full">FALSCH</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Das Rathaus meiner Stadt legt die Preise fest.</h3>
+                        <div class="w-full flex flex-col items-center p-4 bg-red-50 rounded-lg h-full justify-center">
+                            <span class="text-7xl">🏛️</span>
+                            <p class="mt-2 font-semibold">Das Rathaus</p>
+                        </div>
+                    </div>
+                    <!-- Right Side: CORRECT -->
+                    <div class="border-4 border-green-500 bg-white rounded-2xl shadow-lg p-6 flex flex-col items-center text-center relative">
+                        <div class="absolute top-2 right-2 bg-green-500 text-white font-bold py-1 px-3 rounded-full">RICHTIG</div>
+                        <h3 class="text-xl font-semibold text-gray-700 mb-4">Die Europäische Zentralbank (EZB) steuert den Leitzins.</h3>
+                        <div class="w-full flex flex-col items-center p-4 bg-green-50 rounded-lg h-full justify-center">
+                           <span class="text-7xl">🏦</span>
+                           <p class="mt-2 font-semibold">Europäische Zentralbank</p>
+                           <p class="mt-2 text-sm text-gray-600">Hauptinstrument: Leitzins erhöhen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+</html>
