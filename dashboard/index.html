@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WBS Inflation Dashboard - Bildungsplan 2016</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <style>
+        :root {
+            --primary-blue: #2563EB;
+            --success-green: #10B981;
+            --warning-orange: #F59E0B;
+            --error-red: #EF4444;
+            --dark-bg: #1f2937;
+            --light-bg: #f9fafb;
+            --card-white: #ffffff;
+            --text-dark: #111827;
+            --text-gray: #6b7280;
+            --border-light: #e5e7eb;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
+            transition: background-color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #0f172a;
+            color: #f1f5f9;
+        }
+
+        .app-container {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-blue) 0%, #1e40af 100%);
+            color: white;
+            padding: 25px 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        body.dark-mode header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .header-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255,255,255,0.3);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-btn {
+            padding: 10px 16px;
+            background: rgba(255,255,255,0.15);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover, .nav-btn.active {
+            background: rgba(255,255,255,0.25);
+            border-color: rgba(255,255,255,0.5);
+        }
+
+        .content {
+            flex: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 30px 20px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .card {
+            background: var(--card-white);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: box-shadow 0.3s ease;
+        }
+
+        body.dark-mode .card {
+            background: #1e293b;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+
+        .card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .card h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--primary-blue);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card h3 {
+            font-size: 1.3rem;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .card h3 {
+            color: #e2e8f0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            padding: 20px;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary-blue);
+            text-align: center;
+        }
+
+        body.dark-mode .stat-box {
+            background: linear-gradient(135deg, #0c4a6e 0%, #082f49 100%);
+            border-left-color: #38bdf8;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin-bottom: 5px;
+        }
+
+        body.dark-mode .stat-value {
+            color: #38bdf8;
+        }
+
+        .stat-label {
+            font-size: 0.95rem;
+            color: var(--text-gray);
+        }
+
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin-bottom: 30px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        body.dark-mode .comparison-table {
+            background: #0f172a;
+        }
+
+        .comparison-table thead {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .comparison-table th, .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .comparison-table td {
+            border-bottom-color: #334155;
+        }
+
+        .comparison-table tbody tr:hover {
+            background-color: #f3f4f6;
+        }
+
+        body.dark-mode .comparison-table tbody tr:hover {
+            background-color: #1e293b;
+        }
+
+        .inflation-badge {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .inflation-high {
+            background-color: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .inflation-medium {
+            background-color: #fef3c7;
+            color: #92400e;
+        }
+
+        .inflation-low {
+            background-color: #dcfce7;
+            color: #166534;
+        }
+
+        body.dark-mode .inflation-high {
+            background-color: rgba(239, 68, 68, 0.2);
+            color: #fca5a5;
+        }
+
+        body.dark-mode .inflation-medium {
+            background-color: rgba(245, 158, 11, 0.2);
+            color: #fcd34d;
+        }
+
+        body.dark-mode .inflation-low {
+            background-color: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .input-group label {
+            color: #e2e8f0;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            font-size: 1rem;
+            background: white;
+            color: var(--text-dark);
+            transition: border-color 0.3s ease;
+        }
+
+        body.dark-mode .input-group input {
+            background: #0f172a;
+            color: #f1f5f9;
+            border-color: #334155;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-blue);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: var(--success-green);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #059669;
+        }
+
+        .quiz-item {
+            background: #f9fafb;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        body.dark-mode .quiz-item {
+            background: #1e293b;
+            border-left-color: #38bdf8;
+        }
+
+        .quiz-item h4 {
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        body.dark-mode .quiz-item h4 {
+            color: #e2e8f0;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 10px;
+            background: white;
+            border: 2px solid var(--border-light);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        body.dark-mode .quiz-option {
+            background: #0f172a;
+            border-color: #334155;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary-blue);
+            background-color: #eff6ff;
+        }
+
+        body.dark-mode .quiz-option:hover {
+            background-color: rgba(37, 99, 235, 0.1);
+        }
+
+        .quiz-option.correct {
+            background-color: #dcfce7;
+            border-color: var(--success-green);
+        }
+
+        body.dark-mode .quiz-option.correct {
+            background-color: rgba(16, 185, 129, 0.2);
+            border-color: #6ee7b7;
+        }
+
+        .quiz-option.incorrect {
+            background-color: #fee2e2;
+            border-color: var(--error-red);
+        }
+
+        body.dark-mode .quiz-option.incorrect {
+            background-color: rgba(239, 68, 68, 0.2);
+            border-color: #fca5a5;
+        }
+
+        .glossary-term {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        body.dark-mode .glossary-term {
+            border-bottom-color: #334155;
+        }
+
+        .glossary-term:last-child {
+            border-bottom: none;
+        }
+
+        .glossary-term strong {
+            color: var(--primary-blue);
+            font-size: 1.1rem;
+        }
+
+        body.dark-mode .glossary-term strong {
+            color: #38bdf8;
+        }
+
+        .sources-section {
+            background: #f0f9ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-blue);
+        }
+
+        body.dark-mode .sources-section {
+            background: rgba(37, 99, 235, 0.1);
+            border-left-color: #38bdf8;
+        }
+
+        .sources-section h4 {
+            margin-bottom: 15px;
+            color: var(--primary-blue);
+        }
+
+        body.dark-mode .sources-section h4 {
+            color: #38bdf8;
+        }
+
+        .sources-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .sources-list li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(37, 99, 235, 0.2);
+        }
+
+        .sources-list li:last-child {
+            border-bottom: none;
+        }
+
+        .sources-list a {
+            color: var(--primary-blue);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        body.dark-mode .sources-list a {
+            color: #38bdf8;
+        }
+
+        .sources-list a:hover {
+            text-decoration: underline;
+        }
+
+        .achievement-box {
+            background: linear-gradient(135deg, #fef08a 0%, #fde047 100%);
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 20px;
+            border: 2px solid #facc15;
+        }
+
+        body.dark-mode .achievement-box {
+            background: linear-gradient(135deg, #5a4a00 0%, #3d2d00 100%);
+            border-color: #ca8a04;
+        }
+
+        .achievement-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 25px;
+            background-color: #2c3e50;
+            border-top: 1px solid #34495e;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px 12px 0 0;
+            margin-top: 40px;
+        }
+
+        footer img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-bottom: 15px;
+            border: 3px solid #f39c12;
+        }
+
+        footer p {
+            margin: 0;
+            font-size: 1em;
+            color: #ecf0f1;
+            line-height: 1.5;
+        }
+
+        footer p:nth-of-type(2) {
+            margin-top: 5px;
+            font-size: 0.9em;
+        }
+
+        footer a {
+            color: #f39c12;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: #e8b10d;
+        }
+
+        footer p:nth-of-type(3) {
+            margin-top: 15px;
+            font-size: 0.8em;
+            color: #bdc3c7;
+        }
+
+        @media (max-width: 768px) {
+            .header-title {
+                font-size: 1.4rem;
+            }
+
+            .header-content {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .nav-menu {
+                width: 100%;
+                justify-content: flex-start;
+                overflow-x: auto;
+            }
+
+            .card {
+                padding: 15px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-table th, .comparison-table td {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header>
+            <div class="header-content">
+                <div class="header-title">
+                    <span>📊</span>
+                    <span>WBS Inflation Dashboard</span>
+                </div>
+                <button class="theme-toggle" id="themeToggle" title="Dunkelmodus umschalten">🌙</button>
+            </div>
+            <div class="nav-menu" id="navMenu"></div>
+        </header>
+
+        <main class="content active" id="dashboard">
+            <div class="card">
+                <h2>📈 Aktuelle Inflationslage (Dezember 2025)</h2>
+                <p><strong>Datenstand:</strong> <span id="dataDate">November 2025</span></p>
+                
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div class="stat-value" id="de-rate">2,3%</div>
+                        <div class="stat-label">🇩🇪 Deutschland</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="ez-rate">2,1%</div>
+                        <div class="stat-label">🇪🇺 Eurozone</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="us-rate">2,4%</div>
+                        <div class="stat-label">🇺🇸 USA</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="uk-rate">2,6%</div>
+                        <div class="stat-label">🇬🇧 Großbritannien</div>
+                    </div>
+                </div>
+
+                <h3>Vergleich: Inflationsraten weltweit (November 2025)</h3>
+                <div class="chart-container">
+                    <canvas id="inflationChart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="understand">
+            <div class="card">
+                <h2>🎓 Inflation verstehen</h2>
+                
+                <h3>Was ist Inflation?</h3>
+                <p>Inflation bedeutet, dass Dinge teurer werden. Wenn dein Pausenbrot dieses Jahr 1,50 € kostet und nächstes Jahr 1,60 €, ist das Inflation. Die Preise steigen!</p>
+                
+                <h3>Ein Beispiel aus deinem Leben:</h3>
+                <div class="card" style="background: #eff6ff; border-left: 4px solid var(--primary-blue);">
+                    <p><strong>Heute:</strong> Dein Taschengeld reicht für 5 Softeis</p>
+                    <p><strong>In einem Jahr:</strong> Mit dem gleichen Geld nur noch für 4,5 Softeis</p>
+                    <p><strong>Das ist Inflation!</strong> Die Kaufkraft sinkt.</p>
+                </div>
+
+                <h3>🎨 Ursachen der Inflation</h3>
+                <div class="chart-container">
+                    <canvas id="causesChart"></canvas>
+                </div>
+
+                <h3>Warum wird alles teurer?</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>Höhere Rohstoffkosten:</strong> Wenn Erdöl oder Weizen teurer werden, kosten auch Benzin und Brot mehr</li>
+                    <li><strong>Mehr Geld im Umlauf:</strong> Wenn es zu viel Geld gibt, wird jeder Euro weniger wert</li>
+                    <li><strong>Höhere Löhne:</strong> Wenn Arbeitnehmer mehr verdienen, können Unternehmen auch höhere Preise verlangen</li>
+                    <li><strong>Transport & Logistik:</strong> Teurere Lieferketten führen zu höheren Produktpreisen</li>
+                </ul>
+
+                <h3>Folgen der Inflation:</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">💰</div>
+                        <p><strong>Sparquote sinkt</strong><br>Ersparte Geldbeträge werden weniger wert</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🛍️</div>
+                        <p><strong>Kaufkraft sinkt</strong><br>Du kannst weniger kaufen</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📚</div>
+                        <p><strong>Ungleichheit wächst</strong><br>Wer viel verdient, ist besser geschützt</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📊</div>
+                        <p><strong>Wirtschaft unsicher</strong><br>Planen wird schwieriger</p>
+                    </div>
+                </div>
+
+                <h3>🧮 Interaktiver Inflations-Rechner</h3>
+                <p>Berechne, wie viel teurer deine Lieblingsdinge geworden sind:</p>
+                
+                <div class="input-group">
+                    <label>Alter Preis (€):</label>
+                    <input type="number" id="oldPrice" placeholder="z.B. 10" step="0.01">
+                </div>
+                
+                <div class="input-group">
+                    <label>Neuer Preis (€):</label>
+                    <input type="number" id="newPrice" placeholder="z.B. 10.50" step="0.01">
+                </div>
+                
+                <button class="btn btn-primary" onclick="calculateInflation()">Berechnen</button>
+                
+                <div id="inflationResult" style="margin-top: 20px; display: none;">
+                    <div class="stat-box">
+                        <div class="stat-value" id="resultPercentage">0%</div>
+                        <div class="stat-label">Preiserhöhung</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="worldwide">
+            <div class="card">
+                <h2>🌍 Weltweite Übersicht</h2>
+                
+                <h3>Ländervergleich (November 2025)</h3>
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Land</th>
+                            <th>Inflationsrate</th>
+                            <th>Bewertung</th>
+                            <th>Trend</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>🇩🇪 Deutschland</td>
+                            <td>2,3%</td>
+                            <td><span class="inflation-badge inflation-low">Niedrig</span></td>
+                            <td>→ Stabil</td>
+                        </tr>
+                        <tr>
+                            <td>🇪🇺 Eurozone</td>
+                            <td>2,1%</td>
+                            <td><span class="inflation-badge inflation-low">Niedrig</span></td>
+                            <td>→ Stabil</td>
+                        </tr>
+                        <tr>
+                            <td>🇺🇸 USA</td>
+                            <td>2,4%</td>
+                            <td><span class="inflation-badge inflation-low">Niedrig</span></td>
+                            <td>↓ Fallend</td>
+                        </tr>
+                        <tr>
+                            <td>🇬🇧 Großbritannien</td>
+                            <td>2,6%</td>
+                            <td><span class="inflation-badge inflation-medium">Moderat</span></td>
+                            <td>↑ Steigend</td>
+                        </tr>
+                        <tr>
+                            <td>🇯🇵 Japan</td>
+                            <td>1,8%</td>
+                            <td><span class="inflation-badge inflation-low">Niedrig</span></td>
+                            <td>→ Stabil</td>
+                        </tr>
+                        <tr>
+                            <td>🇨🇳 China</td>
+                            <td>-0,3%</td>
+                            <td><span class="inflation-badge inflation-low">Deflation</span></td>
+                            <td>↓ Fallend</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Zeitliche Entwicklung (Januar - Dezember 2025)</h3>
+                <p>Beobachte, wie sich die Inflation über das Jahr 2025 entwickelt hat:</p>
+                <div class="chart-container">
+                    <canvas id="timelineChart"></canvas>
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="germany">
+            <div class="card">
+                <h2>🇩🇪 Deutschland im Fokus</h2>
+                
+                <h3>Detaillierte Inflationsanalyse</h3>
+                <p><strong>Aktuelle Inflationsrate (November 2025):</strong> 2,3%</p>
+                <p><strong>Kerninflation:</strong> 2,0% (ohne Lebensmittel und Energie)</p>
+
+                <h3>📊 Was wird teurer/billiger? (Änderungen gegenüber Vorjahr)</h3>
+                <p>Grün = günstiger geworden | Orange/Rot = teurer geworden</p>
+                <div class="chart-container">
+                    <canvas id="categoryChart"></canvas>
+                </div>
+
+                <h3>Auswirkungen auf Schüler und Jugendliche:</h3>
+                <div class="stats-grid">
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">📱</div>
+                        <p><strong>Handy & Internet</strong><br>+1,2% teurer</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">👕</div>
+                        <p><strong>Kleidung</strong><br>+0,8% teurer</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🚌</div>
+                        <p><strong>Verkehr</strong><br>-1,5% billiger (Energiepreise)</p>
+                    </div>
+                    <div class="stat-box">
+                        <div style="font-size: 2rem; margin-bottom: 10px;">🍔</div>
+                        <p><strong>Essen & Trinken</strong><br>+2,5% teurer</p>
+                    </div>
+                </div>
+
+                <h3>💡 Spartipps für Schüler:</h3>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li><strong>Sparsam einkaufen:</strong> Vergleiche Preise, kaufe Markenprodukte von Discountern</li>
+                    <li><strong>Regelmäßig sparen:</strong> Auch kleine Beträge helfen gegen Inflation</li>
+                    <li><strong>Secondhand nutzen:</strong> Kleidung, Bücher und Elektronik gebraucht kaufen spart Geld</li>
+                    <li><strong>Selbst kochen:</strong> Ist günstiger als Fertigprodukte oder Lieferdienste</li>
+                    <li><strong>Energiesparen:</strong> LED-Lampen, kurze Duschen, Geräte ausschalten</li>
+                    <li><strong>Geldanlage beginner:</strong> Kleine Beträge in ETF-Sparpläne investieren</li>
+                </ul>
+            </div>
+        </main>
+
+        <main class="content" id="calculator">
+            <div class="card">
+                <h2>🧮 Persönlicher Inflations-Rechner</h2>
+                <p>Berechne deine individuelle Inflationsrate basierend auf deinen eigenen Ausgaben!</p>
+
+                <h3>Gib deine monatlichen Ausgaben ein:</h3>
+                
+                <div class="input-group">
+                    <label>Taschengeld / monatliches Budget (€):</label>
+                    <input type="number" id="budget" placeholder="z.B. 50" step="0.01" value="50">
+                </div>
+
+                <div class="input-group">
+                    <label>Handy/Internet (€):</label>
+                    <input type="number" id="phone" placeholder="0" step="0.01" value="10">
+                </div>
+
+                <div class="input-group">
+                    <label>Kleidung (€):</label>
+                    <input type="number" id="clothes" placeholder="0" step="0.01" value="15">
+                </div>
+
+                <div class="input-group">
+                    <label>Essen & Getränke (€):</label>
+                    <input type="number" id="food" placeholder="0" step="0.01" value="15">
+                </div>
+
+                <div class="input-group">
+                    <label>Transport (€):</label>
+                    <input type="number" id="transport" placeholder="0" step="0.01" value="5">
+                </div>
+
+                <div class="input-group">
+                    <label>Freizeit & Hobbys (€):</label>
+                    <input type="number" id="leisure" placeholder="0" step="0.01" value="5">
+                </div>
+
+                <button class="btn btn-primary" onclick="calculatePersonalInflation()">Meine Inflationsrate berechnen</button>
+
+                <div id="personalResult" style="margin-top: 30px; display: none;">
+                    <h3>Deine Ergebnisse:</h3>
+                    <div class="stats-grid">
+                        <div class="stat-box">
+                            <div class="stat-value" id="personalInflationRate">0%</div>
+                            <div class="stat-label">Deine Inflationsrate</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="personalMonthlyImpact">0€</div>
+                            <div class="stat-label">Monatlicher Mehraufwand</div>
+                        </div>
+                        <div class="stat-box">
+                            <div class="stat-value" id="personalYearlyImpact">0€</div>
+                            <div class="stat-label">Jährlicher Mehraufwand</div>
+                        </div>
+                    </div>
+
+                    <h3>Deine Ausgabenverteilung:</h3>
+                    <div class="chart-container">
+                        <canvas id="personalChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="glossary">
+            <div class="card">
+                <h2>📖 Glossar</h2>
+                
+                <div class="glossary-term">
+                    <strong>Inflation</strong><br>
+                    Anhaltender Anstieg des allgemeinen Preisniveaus für Waren und Dienstleistungen. Führt dazu, dass Geld weniger wert wird.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Verbraucherpreisindex (VPI)</strong><br>
+                    Statistisches Maß für die Preisentwicklung. Misst die durchschnittliche Preisveränderung für Waren und Dienstleistungen, die Haushalte kaufen.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Kerninflation</strong><br>
+                    Inflationsrate ohne Lebensmittel und Energie. Diese sind sehr volatile (schwankend) und verfälschen oft das Bild. Die Kerninflation gibt den "Kern-Trend" wieder.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Deflation</strong><br>
+                    Das Gegenteil von Inflation: Preise fallen statt zu steigen. Das klingt gut, ist aber oft ein Zeichen einer schwachen Wirtschaft (wie aktuell in China).
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Kaufkraft</strong><br>
+                    Die Menge an Waren und Dienstleistungen, die du mit einer bestimmten Menge Geld kaufen kannst. Bei Inflation sinkt deine Kaufkraft.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Geldpolitik</strong><br>
+                    Maßnahmen der Zentralbank (wie der Europäischen Zentralbank) zur Kontrolle der Inflation. Beispiel: Erhöhung der Leitzinsen bremst Inflation.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Rohstoffpreise</strong><br>
+                    Preise für Grundmaterialien wie Erdöl, Getreide oder Metalle. Diese beeinflussen stark die Kosten für Produkte und damit die Inflation.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Verbraucherbildung</strong><br>
+                    Ein Schwerpunkt des Bildungsplans 2016 Baden-Württemberg. Ziel: Schüler sollen lernen, informierte und nachhaltige Kaufentscheidungen zu treffen.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>EZB (Europäische Zentralbank)</strong><br>
+                    Die Zentralbank der Eurozone. Sie versucht, die Inflation mit einem Ziel von etwa 2% zu halten.
+                </div>
+
+                <div class="glossary-term">
+                    <strong>Leitzins</strong><br>
+                    Der Zinssatz, zu dem sich Geschäftsbanken Geld von der Zentralbank leihen. Je höher der Leitzins, desto teurer wird Kredite → Inflation sinkt.
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="quiz">
+            <div class="card">
+                <h2>🎯 Quiz: Teste dein Wissen!</h2>
+                <p>Beantworte die Fragen und sammle Punkte für dein Lerntagebuch!</p>
+
+                <div id="quizContainer"></div>
+
+                <div class="achievement-box" id="quizResult" style="display: none;">
+                    <div class="achievement-icon">🏆</div>
+                    <h3>Quiz abgeschlossen!</h3>
+                    <p id="quizScore">Du hast <strong>0</strong> von <strong>5</strong> Fragen richtig beantwortet!</p>
+                    <p id="quizPoints">+<span id="quizPointsValue">0</span> Punkte für dein Lernen!</p>
+                </div>
+            </div>
+        </main>
+
+        <main class="content" id="sources">
+            <div class="card">
+                <h2>📚 Quellen & Daten-Update</h2>
+                
+                <h3>Wie man Daten tagesaktuell hält:</h3>
+                <div class="sources-section">
+                    <h4>🔄 Datenquellen aktualisieren - 3 Optionen:</h4>
+                    <p><strong>Option 1: Manuelle Datenverwaltung (Simplest für Schulen)</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>Neue Inflationsdaten werden monatlich auf Destatis, Eurostat und Reuters veröffentlicht</li>
+                        <li>Daten in die <code>inflationData</code>-Objekte im JavaScript eintragen (copy-paste)</li>
+                        <li>Seite neu laden - Diagramme aktualisieren sich automatisch</li>
+                        <li>Zeitaufwand: ca. 5 Minuten pro Monat</li>
+                    </ul>
+
+                    <p><strong>Option 2: Halbautomatische APIs nutzen</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li><strong>World Bank Data API:</strong> data.worldbank.org - Kostenlos, alle Länder, historische Daten</li>
+                        <li><strong>OECD Statistics API:</strong> stats.oecd.org - Qualitativ hochwertige Inflationsdaten</li>
+                        <li><strong>Trading Economics API:</strong> de.tradingeconomics.com - Aktuelle Echtzeit-Daten (teils kostenpflichtig)</li>
+                        <li>Mit fetch()-Funktion direkt in der App integrierbar</li>
+                    </ul>
+
+                    <p><strong>Option 3: Vollständig automatisiert (Fortgeschrittene)</strong></p>
+                    <ul style="margin-left: 20px; margin-bottom: 20px;">
+                        <li>Webhook-Integration mit World Bank oder OECD APIs</li>
+                        <li>Automatische Backend-Synchronisierung monatlich</li>
+                        <li>Benötigt: Node.js + Webhook-Service (kostenlos auf Netlify, Vercel, Replit)</li>
+                        <li>Daten aktualisieren sich automatisch ohne manuelle Eingriffe</li>
+                    </ul>
+                </div>
+
+                <h3>Primäre Datenquellen:</h3>
+                
+                <div class="sources-section">
+                    <h4>🇩🇪 Deutschland</h4>
+                    <ul class="sources-list">
+                        <li><strong>Statistisches Bundesamt (Destatis):</strong> <a href="https://www.destatis.de" target="_blank">www.destatis.de</a><br>
+                            <em>Offizielle deutsche Inflationsdaten, Verbraucherpreisindex, kostenloses Portal</em></li>
+                        <li><strong>Destatis API:</strong> <a href="https://destatis.api.bund.dev" target="_blank">destatis.api.bund.dev</a><br>
+                            <em>Kostenlose API für Schulen und Forschung</em></li>
+                        <li><strong>Bundesbank Statistiken:</strong> <a href="https://www.bundesbank.de/de/statistiken" target="_blank">www.bundesbank.de/statistiken</a></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🇪🇺 Eurozone & EU</h4>
+                    <ul class="sources-list">
+                        <li><strong>Eurostat:</strong> <a href="https://ec.europa.eu/eurostat" target="_blank">ec.europa.eu/eurostat</a><br>
+                            <em>Offizielle EU-Statistiken, Harmonisierter Verbraucherpreisindex (HVPI)</em></li>
+                        <li><strong>Europäische Zentralbank (EZB):</strong> <a href="https://www.ecb.europa.eu/stats" target="_blank">www.ecb.europa.eu/stats</a></li>
+                        <li><strong>Tagesschau.de Konjunktur:</strong> <a href="https://www.tagesschau.de/wirtschaft/konjunktur/" target="_blank">Aktuelle News</a></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🌍 Weltweit</h4>
+                    <ul class="sources-list">
+                        <li><strong>World Bank Data:</strong> <a href="https://data.worldbank.org/" target="_blank">data.worldbank.org</a><br>
+                            <em>Kostenlose Daten für alle Länder, API verfügbar</em></li>
+                        <li><strong>OECD Statistics:</strong> <a href="https://stats.oecd.org/" target="_blank">stats.oecd.org</a><br>
+                            <em>Qualitativ hochwertige Daten für OECD-Länder</em></li>
+                        <li><strong>Trading Economics:</strong> <a href="https://de.tradingeconomics.com/euro-area/inflation-cpi" target="_blank">de.tradingeconomics.com</a><br>
+                            <em>Benutzerfreundliche Visualisierung aktueller Daten</em></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🇺🇸 USA</h4>
+                    <ul class="sources-list">
+                        <li><strong>U.S. Bureau of Labor Statistics:</strong> <a href="https://www.bls.gov/" target="_blank">www.bls.gov</a><br>
+                            <em>Offizielle CPI-Daten, kostenlos, auch per API</em></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🇬🇧 Großbritannien</h4>
+                    <ul class="sources-list">
+                        <li><strong>Office for National Statistics (ONS):</strong> <a href="https://www.ons.gov.uk/" target="_blank">www.ons.gov.uk</a></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🇯🇵 Japan</h4>
+                    <ul class="sources-list">
+                        <li><strong>Statistics Bureau of Japan:</strong> <a href="https://www.stat.go.jp/" target="_blank">www.stat.go.jp</a></li>
+                    </ul>
+                </div>
+
+                <div class="sources-section">
+                    <h4>🇨🇳 China</h4>
+                    <ul class="sources-list">
+                        <li><strong>National Bureau of Statistics China:</strong> <a href="http://www.stats.gov.cn/" target="_blank">www.stats.gov.cn</a></li>
+                    </ul>
+                </div>
+
+                <h3>Pädagogische Grundlagen:</h3>
+                
+                <div class="sources-section">
+                    <h4>📘 Bildungsplan 2016 Baden-Württemberg</h4>
+                    <ul class="sources-list">
+                        <li><strong>Bildungsplan WBS (Wirtschaft, Berufs- und Studienorientierung):</strong><br>
+                            <em>Kompetenzbereiche: Verbraucher, Erwerbstätiger, Wirtschaftsbürger<br>
+                            Leitperspektive: Verbraucherbildung (VB)<br>
+                            Klassenstufen: 7-10 | Regelstandards und Wahlstandards</em></li>
+                        <li><strong>Quellendatei:</strong> <a href="https://www.bildungsplaene-bw.de" target="_blank">www.bildungsplaene-bw.de</a></li>
+                    </ul>
+                </div>
+
+                <h3>Technische Komponenten:</h3>
+                
+                <div class="sources-section">
+                    <h4>💻 verwendete Open-Source Technologien</h4>
+                    <ul class="sources-list">
+                        <li><strong>Chart.js:</strong> <a href="https://www.chartjs.org/" target="_blank">www.chartjs.org</a><br>
+                            <em>Open-Source JavaScript Bibliothek für interaktive Diagramme (MIT-Lizenz)</em></li>
+                        <li><strong>HTML5, CSS3, JavaScript ES6+:</strong> <br>
+                            <em>Web Standards, kostenfrei, offiziell durch W3C</em></li>
+                        <li><strong>Google Fonts (Inter):</strong> <a href="https://fonts.google.com/" target="_blank">fonts.google.com</a><br>
+                            <em>Kostenlose, offene Schriftarten für Bildungsprojekte</em></li>
+                    </ul>
+                </div>
+
+                <h3>Aktuelle Nachrichtenquellen (für Kontext):</h3>
+                
+                <div class="sources-section">
+                    <ul class="sources-list">
+                        <li><strong>Handelsblatt:</strong> <a href="https://www.handelsblatt.com/" target="_blank">Wirtschaftsnachrichten</a></li>
+                        <li><strong>Deutschlandfunk:</strong> <a href="https://www.deutschlandfunk.de/" target="_blank">Wirtschaft & Nachrichten</a></li>
+                        <li><strong>DW (Deutsche Welle):</strong> <a href="https://www.dw.com/de/" target="_blank">Deutschsprachige News</a></li>
+                        <li><strong>BBC News:</strong> <a href="https://www.bbc.com/news/" target="_blank">International News</a></li>
+                    </ul>
+                </div>
+
+                <h3>🔧 Code-Quellen & Lizenzen:</h3>
+                
+                <div class="sources-section">
+                    <p><strong>Diese Webapp ist vollständig selbst entwickelt mit Open-Source Standards:</strong></p>
+                    <ul class="sources-list">
+                        <li><strong>Chart.js (v4.4.0):</strong> MIT-Lizenz | <a href="https://github.com/chartjs/Chart.js" target="_blank">github.com/chartjs/Chart.js</a></li>
+                        <li><strong>Design Pattern:</strong> Mobile-First Responsive Design (Best Practice)</li>
+                        <li><strong>HTML5 Semantik:</strong> W3C Standards für Barrierefreiheit</li>
+                        <li><strong>CSS3 Features:</strong> CSS Grid, Flexbox, CSS Variables (Modern Browser Support)</li>
+                        <li><strong>JavaScript:</strong> Vanille JS (keine externe Abhängigkeiten außer Chart.js)</li>
+                    </ul>
+                </div>
+
+                <h3>Datenstand & Aktualität:</h3>
+                
+                <div class="sources-section">
+                    <p><strong>Aktuelle Daten vom:</strong> November/Dezember 2025</p>
+                    <p><strong>Letzte Aktualisierung:</strong> <span id="lastUpdate">19. Dezember 2025</span></p>
+                    <p><strong>Nächste geplante Aktualisierung:</strong> Januar 2026 (bei Veröffentlichung der Dezember-Daten)</p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <img src="http://www.realteacher.de/_media/realteacher.jpg" alt="TheRealTeacher">
+            <p>&copy; 2025 Interaktive Lerneinheit &rarr; WBS Inflation - TheRealTeacher</p>
+            <p><a href="mailto:info@realteacher.de">info@realteacher.de</a></p>
+            <p>Baden-Württemberg Bildungsplan 2016 (WBS Inflation)</p>
+        </footer>
+    </div>
+
+    <script>
+        // Datenbank mit historischen Inflationsdaten (monatlich)
+        const inflationData = {
+            Germany: [1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.4, 2.3, 2.2, 2.2, 2.3, 2.3],
+            Eurozone: [1.7, 1.8, 1.9, 2.0, 2.1, 2.2, 2.3, 2.2, 2.1, 2.1, 2.1, 2.2],
+            USA: [3.2, 3.1, 3.0, 2.9, 2.8, 2.7, 2.6, 2.5, 2.5, 2.4, 2.4, 2.4],
+            UK: [3.5, 3.4, 3.2, 3.0, 2.9, 2.8, 2.7, 2.6, 2.6, 2.6, 2.6, 2.6],
+            Japan: [2.0, 2.1, 2.0, 1.9, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8, 1.8],
+            China: [-0.2, -0.1, 0.0, 0.1, -0.1, -0.2, -0.3, -0.3, -0.3, -0.3, -0.3, -0.3]
+        };
+
+        const months = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+        const currentMonth = 10; // November (0-indexed)
+
+        // Navigation Setup
+        function setupNavigation() {
+            const navItems = [
+                { id: 'dashboard', label: '📊 Dashboard', icon: '📊' },
+                { id: 'understand', label: '🎓 Verstehen', icon: '🎓' },
+                { id: 'worldwide', label: '🌍 Weltweit', icon: '🌍' },
+                { id: 'germany', label: '🇩🇪 Deutschland', icon: '🇩🇪' },
+                { id: 'calculator', label: '🧮 Rechner', icon: '🧮' },
+                { id: 'glossary', label: '📖 Glossar', icon: '📖' },
+                { id: 'quiz', label: '🎯 Quiz', icon: '🎯' },
+                { id: 'sources', label: '📚 Quellen', icon: '📚' }
+            ];
+
+            const navMenu = document.getElementById('navMenu');
+            navItems.forEach(item => {
+                const btn = document.createElement('button');
+                btn.className = 'nav-btn' + (item.id === 'dashboard' ? ' active' : '');
+                btn.textContent = item.label;
+                btn.onclick = () => switchTab(item.id, btn);
+                navMenu.appendChild(btn);
+            });
+        }
+
+        // Tab switching
+        function switchTab(tabId, button) {
+            document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            button.classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        // Theme Toggle
+        function setupTheme() {
+            const themeToggle = document.getElementById('themeToggle');
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                themeToggle.textContent = '☀️';
+            }
+            themeToggle.onclick = () => {
+                document.body.classList.toggle('dark-mode');
+                const isNowDark = document.body.classList.contains('dark-mode');
+                localStorage.setItem('darkMode', isNowDark);
+                themeToggle.textContent = isNowDark ? '☀️' : '🌙';
+            };
+        }
+
+        // Chart 0: Causes of Inflation
+        let causesChartInstance = null;
+        function createCausesChart() {
+            const ctx = document.getElementById('causesChart');
+            if (!ctx) return;
+
+            if (causesChartInstance) {
+                causesChartInstance.destroy();
+            }
+
+            const chartCtx = ctx.getContext('2d');
+            causesChartInstance = new Chart(chartCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Rohstoff-\nkosten', 'Geldmenge', 'Löhne', 'Transport', 'Sonstiges'],
+                    datasets: [{
+                        label: 'Auswirkung (%)',
+                        data: [35, 25, 20, 15, 5],
+                        backgroundColor: ['#2563EB', '#0ea5e9', '#10B981', '#F59E0B', '#8B5CF6'],
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: true, position: 'bottom' }
+                    },
+                    scales: {
+                        x: {
+                            max: 100,
+                            ticks: { callback: v => v + '%' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 1: Inflation Comparison
+        let inflationChartInstance = null;
+        function createInflationChart() {
+            const ctx = document.getElementById('inflationChart').getContext('2d');
+            const countries = ['Deutschland', 'Eurozone', 'USA', 'Großbritannien', 'Japan', 'China'];
+            const rates = [2.3, 2.1, 2.4, 2.6, 1.8, -0.3];
+            const colors = rates.map(r => r < 1 ? '#ef4444' : r < 2.5 ? '#10b981' : '#f59e0b');
+
+            if (inflationChartInstance) {
+                inflationChartInstance.destroy();
+            }
+
+            inflationChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: countries,
+                    datasets: [{
+                        label: 'Inflationsrate (%)',
+                        data: rates,
+                        backgroundColor: colors,
+                        borderRadius: 8,
+                        borderSkipped: false
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 3,
+                            ticks: { callback: v => v + '%' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 2: Timeline
+        let timelineChartInstance = null;
+        function createTimelineChart() {
+            const ctx = document.getElementById('timelineChart').getContext('2d');
+            const monthLabels = months.slice(0, currentMonth + 1);
+
+            if (timelineChartInstance) {
+                timelineChartInstance.destroy();
+            }
+
+            timelineChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: monthLabels,
+                    datasets: [
+                        {
+                            label: 'Deutschland',
+                            data: inflationData.Germany.slice(0, currentMonth + 1),
+                            borderColor: '#2563EB',
+                            tension: 0.4,
+                            fill: false,
+                            pointRadius: 5
+                        },
+                        {
+                            label: 'Eurozone',
+                            data: inflationData.Eurozone.slice(0, currentMonth + 1),
+                            borderColor: '#10B981',
+                            tension: 0.4,
+                            fill: false,
+                            pointRadius: 5
+                        },
+                        {
+                            label: 'USA',
+                            data: inflationData.USA.slice(0, currentMonth + 1),
+                            borderColor: '#F59E0B',
+                            tension: 0.4,
+                            fill: false,
+                            pointRadius: 5
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            ticks: { callback: v => v + '%' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // Chart 3: Category Changes
+        let categoryChartInstance = null;
+        function createCategoryChart() {
+            const ctx = document.getElementById('categoryChart').getContext('2d');
+            const categories = ['Nahrung', 'Energie', 'Transport', 'Kleidung', 'Wohnung', 'Freizeit'];
+            const changes = [2.5, -2.4, -1.5, 0.8, 1.2, 0.5];
+            const colors = changes.map(c => c < 0 ? '#10b981' : '#f59e0b');
+
+            if (categoryChartInstance) {
+                categoryChartInstance.destroy();
+            }
+
+            categoryChartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: categories,
+                    datasets: [{
+                        label: 'Preisveränderung (%)',
+                        data: changes,
+                        backgroundColor: colors,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: { x: { ticks: { callback: v => v + '%' } } }
+                }
+            });
+        }
+
+        // Chart 4: Personal Spending
+        let personalChartInstance = null;
+        function createPersonalChart(data) {
+            const ctx = document.getElementById('personalChart');
+            if (!ctx) return;
+
+            if (personalChartInstance) {
+                personalChartInstance.destroy();
+            }
+
+            const chartCtx = ctx.getContext('2d');
+            personalChartInstance = new Chart(chartCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Handy/Internet', 'Kleidung', 'Essen', 'Transport', 'Freizeit'],
+                    datasets: [{
+                        data: [data.phone, data.clothes, data.food, data.transport, data.leisure],
+                        backgroundColor: ['#2563EB', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Calculate inflation
+        function calculateInflation() {
+            const oldPrice = parseFloat(document.getElementById('oldPrice').value);
+            const newPrice = parseFloat(document.getElementById('newPrice').value);
+
+            if (!oldPrice || !newPrice || oldPrice <= 0) {
+                alert('Bitte gib gültige Preise ein!');
+                return;
+            }
+
+            const percentage = ((newPrice - oldPrice) / oldPrice * 100).toFixed(2);
+            document.getElementById('resultPercentage').textContent = percentage + '%';
+            document.getElementById('inflationResult').style.display = 'block';
+        }
+
+        // Calculate personal inflation
+        function calculatePersonalInflation() {
+            const data = {
+                budget: parseFloat(document.getElementById('budget').value) || 50,
+                phone: parseFloat(document.getElementById('phone').value) || 0,
+                clothes: parseFloat(document.getElementById('clothes').value) || 0,
+                food: parseFloat(document.getElementById('food').value) || 0,
+                transport: parseFloat(document.getElementById('transport').value) || 0,
+                leisure: parseFloat(document.getElementById('leisure').value) || 0
+            };
+
+            const total = data.phone + data.clothes + data.food + data.transport + data.leisure;
+            const avgInflation = (data.phone * 1.2 + data.clothes * 0.8 + data.food * 2.5 + data.transport * -1.5 + data.leisure * 0.5) / (total || 1);
+            const monthlyImpact = (data.budget * avgInflation / 100).toFixed(2);
+            const yearlyImpact = (monthlyImpact * 12).toFixed(2);
+
+            document.getElementById('personalInflationRate').textContent = avgInflation.toFixed(2) + '%';
+            document.getElementById('personalMonthlyImpact').textContent = monthlyImpact + '€';
+            document.getElementById('personalYearlyImpact').textContent = yearlyImpact + '€';
+            document.getElementById('personalResult').style.display = 'block';
+
+            createPersonalChart(data);
+        }
+
+        // Quiz Setup
+        function setupQuiz() {
+            const quizData = [
+                {
+                    question: 'Was bedeutet Inflation?',
+                    options: [
+                        'Preise steigen',
+                        'Preise sinken',
+                        'Geldverdopplung',
+                        'Sparquote erhöht sich'
+                    ],
+                    correct: 0
+                },
+                {
+                    question: 'Welches Land hatte im November 2025 die höchste Inflationsrate?',
+                    options: [
+                        'Deutschland (2,3%)',
+                        'Großbritannien (2,6%)',
+                        'USA (2,4%)',
+                        'Eurozone (2,1%)'
+                    ],
+                    correct: 1
+                },
+                {
+                    question: 'Was ist die Kerninflation?',
+                    options: [
+                        'Inflationsrate mit Lebensmitteln',
+                        'Inflationsrate ohne Lebensmittel und Energie',
+                        'Negative Inflation',
+                        'Mittlere Weltinflation'
+                    ],
+                    correct: 1
+                },
+                {
+                    question: 'Wie beeinflusst Inflation dein Taschengeld?',
+                    options: [
+                        'Es steigt automatisch',
+                        'Es sinkt automatisch',
+                        'Es reicht für weniger Produkte',
+                        'Gar nicht'
+                    ],
+                    correct: 2
+                },
+                {
+                    question: 'Welche Maßnahme kann die Zentralbank gegen Inflation ergreifen?',
+                    options: [
+                        'Leitzins senken',
+                        'Leitzins erhöhen',
+                        'Preise direktverordnen',
+                        'Geld drucken'
+                    ],
+                    correct: 1
+                }
+            ];
+
+            const container = document.getElementById('quizContainer');
+            let correctAnswers = 0;
+
+            quizData.forEach((q, i) => {
+                const quizItem = document.createElement('div');
+                quizItem.className = 'quiz-item';
+                quizItem.innerHTML = `
+                    <h4>${i + 1}. ${q.question}</h4>
+                    <div class="quiz-options">
+                        ${q.options.map((opt, j) => `
+                            <div class="quiz-option" onclick="handleQuizAnswer(this, ${j === q.correct}, event)">
+                                ${opt}
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+                container.appendChild(quizItem);
+            });
+
+            window.handleQuizAnswer = function(elem, isCorrect, e) {
+                if (elem.classList.contains('correct') || elem.classList.contains('incorrect')) return;
+
+                if (isCorrect) {
+                    elem.classList.add('correct');
+                    correctAnswers++;
+                } else {
+                    elem.classList.add('incorrect');
+                }
+
+                const options = elem.parentElement.querySelectorAll('.quiz-option');
+                options.forEach(opt => opt.style.pointerEvents = 'none');
+
+                if (document.querySelectorAll('.quiz-option.correct, .quiz-option.incorrect').length === quizData.length * quizData[0].options.length) {
+                    showQuizResult(correctAnswers, quizData.length);
+                }
+            };
+        }
+
+        function showQuizResult(correct, total) {
+            const points = correct * 10;
+            document.getElementById('quizScore').innerHTML = `Du hast <strong>${correct}</strong> von <strong>${total}</strong> Fragen richtig beantwortet!`;
+            document.getElementById('quizPointsValue').textContent = points;
+            document.getElementById('quizResult').style.display = 'block';
+
+            let savedPoints = parseInt(localStorage.getItem('learningPoints') || '0');
+            savedPoints += points;
+            localStorage.setItem('learningPoints', savedPoints);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            setupNavigation();
+            setupTheme();
+            createCausesChart();
+            createInflationChart();
+            createTimelineChart();
+            createCategoryChart();
+            setupQuiz();
+        });
+    </script>
+</body>
+</html>
