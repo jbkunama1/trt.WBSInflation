@@ -190,7 +190,7 @@ Das **Quiz-System** ist das interaktive Kernstück mit:
 ### 📁 Datenquellen:
 - ✅ Aktuelle Inflationsdaten
 - ✅ Europäische Zentralbank (EZB)
-- ✅ Statistische Bundesamt
+- ✅ Statistisches Bundesamt (Destatis)
 - ✅ OECD-Statistiken
 - ✅ Realwirtschaftliche Fallbeispiele
 
