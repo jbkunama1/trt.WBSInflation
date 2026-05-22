@@ -400,7 +400,7 @@ Siehe [LICENSE](LICENSE) für vollständige Details.
 - ✔️ Benutzerfreundlichkeit getestet
 - ✔️ Cross-Browser Kompatibilität
 - ✔️ Mobile Responsiveness
-- ✔️ Datensicherheit implementiert
+- ⚠️ Datensicherheit ist deploymentspezifisch: Wenn Ergebnisse in `quiz/data/quiz_log.csv` gespeichert werden, sollte die Datei außerhalb des Document-Roots liegen oder der Webserver-Zugriff auf `quiz/data/` explizit gesperrt werden.
 
 ---
 
