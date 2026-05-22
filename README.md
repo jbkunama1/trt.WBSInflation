@@ -348,7 +348,7 @@ Siehe [LICENSE](LICENSE) für vollständige Details.
 ✅ Orientierung an realen Lebenssituationen
 ✅ Unterstützung verschiedener Lernstile
 ✅ Vorbereitung auf weitere Wirtschaftslehre
-✅ Förderung von Finanzielle Kompetenz
+✅ Förderung finanzieller Kompetenz
 ```
 
 ---
