@@ -166,10 +166,12 @@ Das **Quiz-System** ist das interaktive Kernstück mit:
 
 ### 👨‍🏫 Für Lehrkräfte | For Educators:
 
-1. **Admin-Panel**: Zugriff auf `quiz/admin.php`
-2. **Ergebnisse anschauen**: CSV-Dateien in `quiz/data/`
-3. **Materialien anpassen**: Bearbeite `quiz/fragenpool_komplett.json`
-4. **Dashboard im Unterricht zeigen**: Projiziere `dashboard/index.html`
+1. **Admin-Panel**: Zugriff auf `quiz/admin.php` (geschützt durch ein Admin-Passwort)
+2. **Admin-Passwort setzen/ändern**: Das Login-Passwort ist im Code als `ADMIN_PASSWORD` festgelegt. Passe diesen Wert vor dem Einsatz an und wähle ein eigenes sicheres Passwort.
+3. **Sicherheit beachten**: Ein vorhandenes Standard-/Default-Passwort sollte nicht produktiv genutzt werden. Ändere `ADMIN_PASSWORD` vor der Veröffentlichung oder Nutzung im Unterrichtsbetrieb.
+4. **Ergebnisse anschauen**: CSV-Dateien in `quiz/data/`
+5. **Materialien anpassen**: Bearbeite `quiz/fragenpool_komplett.json`
+6. **Dashboard im Unterricht zeigen**: Projiziere `dashboard/index.html`
 
 ---
 
